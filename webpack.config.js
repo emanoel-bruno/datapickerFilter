@@ -1,11 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 process.traceDeprecation = true;
 
@@ -35,12 +33,11 @@ module.exports = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template : path.join(__dirname, 'src/index.ejs'),
             filename : 'index.html',
             title: 'Events',
-            inject: 'body',
+            inject: false,
             minify   : {
                 html5                          : true,
                 collapseWhitespace             : true,
@@ -65,25 +62,22 @@ module.exports = {
             jQuery: 'jquery',
             Popper: ['popper.js', 'default']
         }),
-        new CompressionPlugin({
-            test: /\.(js|css)/
-        }),
         new TerserPlugin(),
     ],
     watch: true,
     output: {
         path: path.join(__dirname, 'dist'),
-        publicPath: '/dist/',
+        publicPath: '',
         filename: 'bundle.js',
         chunkFilename: '[name].js'
     },
     module: {
         rules: [
             {
-                {
-                    test: /\.html$/i,
-                    loader: 'html-loader',
-                },,
+                test: /\.html$/i,
+                loader: 'html-loader',
+            },
+            {
                 test: /\.(gif|png|jpe?g|svg)$/i,
                 use: [
                     'file-loader',
@@ -92,7 +86,7 @@ module.exports = {
                         options: {
                             mozjpeg: {
                                 progressive: true,
-                                quality: 65
+                                quality: 80
                             },
                             // optipng.enabled: false will disable optipng
                             optipng: {
@@ -108,7 +102,7 @@ module.exports = {
                             // the webp option will enable WEBP
                             webp: {
                                 quality: 75
-                            }
+                            },
                         }
                     },
                 ],
@@ -145,11 +139,7 @@ module.exports = {
                 loader: ['babel-loader', 'eslint-loader'],
             },
             {
-                test: /\.(jpe?g|png|gif)$/i,
-                loader: 'file-loader'
-            },
-            {
-                test: /\.(woff|ttf|otf|eot|woff2|svg)$/i,
+                test: /\.(woff|ttf|otf|eot|woff2)$/i,
                 loader: 'file-loader'
             }
         ]
