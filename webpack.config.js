@@ -80,8 +80,38 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.html$/i,
-                loader: 'html-loader',
+                {
+                    test: /\.html$/i,
+                    loader: 'html-loader',
+                },,
+                test: /\.(gif|png|jpe?g|svg)$/i,
+                use: [
+                    'file-loader',
+                    {
+                        loader: 'image-webpack-loader',
+                        options: {
+                            mozjpeg: {
+                                progressive: true,
+                                quality: 65
+                            },
+                            // optipng.enabled: false will disable optipng
+                            optipng: {
+                                enabled: false,
+                            },
+                            pngquant: {
+                                quality: [0.85, 0.90],
+                                speed: 4
+                            },
+                            gifsicle: {
+                                interlaced: false,
+                            },
+                            // the webp option will enable WEBP
+                            webp: {
+                                quality: 75
+                            }
+                        }
+                    },
+                ],
             },
             {
                 test: /\.scss$/,
@@ -91,7 +121,6 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            minimize: true,
                             sourceMap: true,
                             importLoaders: 1,
                         }
@@ -126,7 +155,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.json', '.js', '.jsx', '.scss','html']
+        extensions: ['.json', '.js', '.jsx', '.scss','html', 'ejs']
     },
     devtool: 'source-map',
 };
