@@ -120,7 +120,7 @@ module.exports = {
                         }
                     },
                     {
-                        loader: 'sass-loader'
+                        loader: 'sass-loader',
                     },
                     {
                         loader: 'postcss-loader'
@@ -129,7 +129,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(js|jsx)$/,
+                test: /\.js$/,
                 include: [
                     path.resolve(__dirname, 'src')
                 ],
