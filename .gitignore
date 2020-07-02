@@ -1,7 +1,0 @@
-.vscode/
-node_modules/
-dist/*.js.*
-dist/*.css.*
-lerna-debug.log
-yarn-debug.log*
-yarn-error.log*
