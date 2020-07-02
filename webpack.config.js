@@ -60,6 +60,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
+            toast: 'jquery-toast-plugin',
             Popper: ['popper.js', 'default']
         }),
         new TerserPlugin(),

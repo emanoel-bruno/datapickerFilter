@@ -4,6 +4,9 @@
 .justify-center {
   justify-content: center !important; }
 
+.d-none {
+  display: none !important; }
+
 .brand-image {
   height: 45px; }
 
