@@ -448,6 +448,7 @@ const filterElements =  (type, key) => {
     let firstDay, lastDay;
     switch (type) {
         case 'name':
+            console.log('Before');
             eventsIndex.forEach(event => {
                 let title = event.title;
                 event = $('#' + event.idCard);
@@ -455,8 +456,10 @@ const filterElements =  (type, key) => {
                     event.addClass('d-none');
                 }
             });
+            console.log('After');
             break;
         case 'month':
+            console.log('After');
             firstDay = new Date(parseInt(key.split('-')[0]),parseInt(key.split('-')[1]), 1);
             lastDay = new Date(parseInt(key.split('-')[0]),parseInt(key.split('-')[1]) + 1, 0);
             cardNumber=0;
@@ -464,6 +467,7 @@ const filterElements =  (type, key) => {
             json.events.forEach(event => {
                 createEvents(event, firstDay, lastDay); 
             });
+            reSortItems();
             break;
         case 'year':
             firstDay = new Date(parseInt(key),0, 1);
@@ -605,7 +609,8 @@ const setupFiltersButton = () => {
     let search = $('#searchForm');
     let reset = $('#resetButton');
 
-    search.submit(() =>{
+    search.submit((e) =>{
+        e.preventDefault();
         let searchText = $('#searchInput').val();
         filterElements('name', searchText);
     });
