@@ -445,8 +445,6 @@ const reSortItems  = () => {
 };
 
 const filterElements =  (type, key) => {
-    cardNumber=0;
-    eventsIndex=Array();
     let firstDay, lastDay;
     switch (type) {
         case 'name':
@@ -461,6 +459,8 @@ const filterElements =  (type, key) => {
         case 'month':
             firstDay = new Date(parseInt(key.split('-')[0]),parseInt(key.split('-')[1]), 1);
             lastDay = new Date(parseInt(key.split('-')[0]),parseInt(key.split('-')[1]) + 1, 0);
+            cardNumber=0;
+            eventsIndex=Array();
             json.events.forEach(event => {
                 createEvents(event, firstDay, lastDay); 
             });
@@ -468,23 +468,28 @@ const filterElements =  (type, key) => {
         case 'year':
             firstDay = new Date(parseInt(key),0, 1);
             lastDay = new Date(parseInt(key) + 1,0, 0);
+            cardNumber=0;
+            eventsIndex=Array();
             json.events.forEach(event => {
                 createEvents(event, firstDay, lastDay); 
             });
+            reSortItems();
             break;
         case 'period':
             firstDay = key[0];
             lastDay = key[1];
+            cardNumber=0;
+            eventsIndex=Array();
             json.events.forEach(event => {
                 createEvents(event, firstDay, lastDay); 
             });
+            reSortItems();
             break;
         default:
             console.log('Invalid option');
             break;
     }
     // eslint-disable-next-line no-alert
-    reSortItems();
     $.toast({
         heading: 'Success',
         text: 'Successfully Filtered.',
