@@ -80,8 +80,12 @@ module.exports = {
             {
                 test: /\.(gif|png|jpe?g|svg)$/i,
                 use: [
-                    'file-loader',
                     {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                        },
+                    },{
                         loader: 'image-webpack-loader',
                         options: {
                             mozjpeg: {

@@ -1,6 +1,9 @@
 .align-center {
   align-items: center !important; }
 
+.justify-center {
+  justify-content: center !important; }
+
 .brand-image {
   height: 45px; }
 
@@ -15,6 +18,30 @@
 
 #navbarDropdown {
   padding: 0.375rem !important; }
+
+.event-card {
+  width: 20rem; }
+
+.card {
+  box-shadow: 10px 10px 12px -1px #e6e6e6; }
+
+.card-text {
+  height: 50px; }
+
+.card-img-top {
+  height: 16rem;
+  width: 100%;
+  background-color: #fbfcff; }
+
+.modal-data {
+  margin-left: 8rem; }
+
+.modal-event-img-content {
+  height: auto;
+  width: 95%; }
+
+.modal-event-dialog {
+  max-width: 92vw !important; }
 
 
 /*# sourceMappingURL=main.css.map*/

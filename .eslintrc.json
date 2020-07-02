@@ -23,7 +23,7 @@
       "no-redeclare": "error",
       "strict": "error",
       "no-undef": "error",
-      "no-unused-vars": "error",
+      "no-unused-vars": "warn",
       "no-use-before-define": "error",
       "camelcase": "error",
       "brace-style": "error",

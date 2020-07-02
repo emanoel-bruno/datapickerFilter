@@ -14,3 +14,33 @@
 #navbarDropdown {
   padding: 0.375rem !important;
 }
+
+// Event Card
+.event-card{
+  width: 20rem;
+}
+.card{
+  box-shadow: 10px 10px 12px -1px rgba(230,230,230,1);
+}
+.card-text{
+  height: 50px;
+}
+.card-img-top{
+  height: 16rem;
+  width: 100%;
+  background-color: rgb(251, 252, 255);
+}
+
+// Event Modal
+
+.modal-data{
+  margin-left: 8rem;
+}
+
+.modal-event-img-content{
+  height: auto;
+  width: 95%;
+}
+.modal-event-dialog{
+  max-width: 92vw!important;
+}
