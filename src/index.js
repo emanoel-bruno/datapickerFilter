@@ -189,6 +189,7 @@ const createEventModal = ( data, idCardModal, startDate, endDate) => {
         modalDataCost.addClass(c);
         modalDataStart.addClass(c);
         modalDataEnd.addClass(c);
+        modalDataAddressName.addClass(c);
         modalDataAddressZip.addClass(c);
         modalDataAddressCity.addClass(c);
         modalDataAddressStreet.addClass(c);
