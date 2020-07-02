@@ -2,10 +2,12 @@
 import './public/scss/common';
 import './public/scss/index';
 import logo from './public/img/logo.png';
+
 var json = require('./public/json/sample-data.json');
 var cardNumber=0;
-var eventsIndex=[];
+var eventsIndex=Array();
 var images={};
+
 const appendLogo = () => {
     let navBrand =  $('#brand');
     let image = $('<img/>');
@@ -28,66 +30,36 @@ const importAllImages = (root) => {
         images[item.replace('./', '')] = root(item); 
     });
 };
-// Sort elements and reconstruct page
-const sortElements = (type, mode) =>{
-    console.log(eventsIndex);
 
+
+const filterElements =  (type, mode) => {
     switch (type) {
         case 'date':
             if(mode === 'asc'){
                 eventsIndex = eventsIndex.sort((a,b)=>{
-                    console.log(a.start);
-                    console.log(b.start);
-                    console.log(a.start>b.start);
-                    a = a.start;
-                    b = b.start;
-                    if(a > b) {
-                        return -1;
-                    } else if(a < b) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+                    return a.start - b.start;
                 });
             } else{
                 eventsIndex = eventsIndex.sort((a,b)=>{
-                    if(a.start > b.start) {
-                        return 1;
-                    } else if(a.start < b.start) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
+                    return b.start - a.start;
                 });
             }
+            break;
         case 'cost':
             if(mode === 'asc'){
                 eventsIndex = eventsIndex.sort((a,b)=>{
                     a = parseFloat(a.cost);
                     b = parseFloat(b.cost);
-                    if(a < b) {
-                        return -1;
-                    } else if(a > b) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+                    return a - b;
                 });
             } else{
                 eventsIndex = eventsIndex.sort((a,b)=>{
                     a = parseFloat(a.cost);
                     b = parseFloat(b.cost);
-                    if(a > b) {
-                        return -1;
-                    } else if(a < b) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+                    return b - a;
                 });
             }
             break;
-    
         case 'name':
             if(mode === 'asc'){
                 eventsIndex = eventsIndex.sort((a,b)=>{
@@ -106,8 +78,60 @@ const sortElements = (type, mode) =>{
     }
     let container = $('#cardsContainer');
     container.html(' ');
-    console.log('Depois');
-    console.log(eventsIndex);
+    eventsIndex.forEach(event => {
+        container.append(event.card);
+        container.append(event.modal);
+    });
+
+};
+
+// Sort elements and reconstruct page
+const sortElements = (type, mode) =>{
+    switch (type) {
+        case 'date':
+            if(mode === 'asc'){
+                eventsIndex = eventsIndex.sort((a,b)=>{
+                    return a.start - b.start;
+                });
+            } else{
+                eventsIndex = eventsIndex.sort((a,b)=>{
+                    return b.start - a.start;
+                });
+            }
+            break;
+        case 'cost':
+            if(mode === 'asc'){
+                eventsIndex = eventsIndex.sort((a,b)=>{
+                    a = parseFloat(a.cost);
+                    b = parseFloat(b.cost);
+                    return a - b;
+                });
+            } else{
+                eventsIndex = eventsIndex.sort((a,b)=>{
+                    a = parseFloat(a.cost);
+                    b = parseFloat(b.cost);
+                    return b - a;
+                });
+            }
+            break;
+        case 'name':
+            if(mode === 'asc'){
+                eventsIndex = eventsIndex.sort((a,b)=>{
+                    return  a.title.localeCompare(b.title);
+                });
+            } else{
+                eventsIndex = eventsIndex.sort((a,b)=>{
+                    return -a.title.localeCompare(b.title);
+                });
+            }
+            break;
+    
+        default:
+            console.log('Invalid option');
+            break;
+    }
+    let container = $('#cardsContainer');
+    container.html(' ');
     eventsIndex.forEach(event => {
         container.append(event.card);
         container.append(event.modal);
@@ -116,6 +140,13 @@ const sortElements = (type, mode) =>{
 
 };
 
+const setupFiltersButton = () => {
+    let period = $('#sortDate');
+    let month = $('#sortPrice');
+    let year = $('#sortName');
+    let search = $('#sortName');
+
+};
 
 const setupSortButton = () => {
     let date = $('#sortDate');
@@ -145,6 +176,7 @@ const setupSortButton = () => {
             }
         }
     });
+
     price.click(()=>{
         let icon = $('#sortPriceIcon');
         let current =  icon.html();
@@ -302,27 +334,10 @@ const createEventModal = ( data, idCardModal) => {
     let classesModalImage = ['col-lg-6', 'd-flex', 'align-center', 'justify-center'];
     let classesModalData = ['col-lg-6', 'modal-event-data'];
     let classesModalImageContent = ['modal-event-img-content'];
-    let classesModalDataCategory = ['h3', 'my-2', 'pb-1', 'border', 'border-secondary'];
-    let classesModalDataDescriptionLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
-    let classesModalDataDescription = ['text-left', 'modal-data'];
-    let classesModalDataCostLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
-    let classesModalDataCost = ['text-left', 'modal-data'];
-    let classesModalDataRecurrenceLabel = ['mr-2','position-absolute', 'h5', 'd-block', 'text-left'];
     let classesModalDataRecurrence = ['text-left', 'modal-data', 'text-uppercase'];
-    let classesModalDataDate = ['h3', 'my-2', 'pb-1', 'border', 'border-secondary'];
-    let classesModalDataStartLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
-    let classesModalDataStart = ['text-left', 'modal-data'];
-    let classesModalDataEndLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
-    let classesModalDataEnd = ['text-left', 'modal-data'];
-    let classesModalDataAddress = ['h3', 'my-2', 'pb-1', 'border', 'border-secondary'];
-    let classesModalDataAddressNameLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
-    let classesModalDataAddressName = ['text-left', 'modal-data'];
-    let classesModalDataAddressZipLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
-    let classesModalDataAddressZip = ['text-left', 'modal-data'];
-    let classesModalDataAddressCityLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
-    let classesModalDataAddressCity = ['text-left', 'modal-data'];
-    let classesModalDataAddressStreetLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
-    let classesModalDataAddressStreet = ['text-left', 'modal-data'];
+    let classesModalDataTag = ['h3', 'my-2', 'pb-1', 'border', 'border-secondary'];
+    let classesModalDataLabel = ['mr-2','position-absolute','h5', 'd-block', 'text-left'];
+    let classesModalDataValue = ['text-left', 'modal-data'];
     let classesModalFooter = ['row'];
     let classesModalLink = ['btn', 'btn-primary', 'w-25','ml-auto', 'button-link'];
     classesModalFade.map(c => modalFade.addClass(c));
@@ -367,69 +382,63 @@ const createEventModal = ( data, idCardModal) => {
         modalImageContent.attr('src', 'default.png');
     }
 
-    classesModalDataCategory.map(c => modalDataCategory.addClass(c));
-    modalDataCategory.html(data.category);
+    classesModalDataTag.map(c => {
+        modalDataCategory.addClass(c);
+        modalDataDate.addClass(c);
+        modalDataAddress.addClass(c);
+    });
 
-    classesModalDataDescriptionLabel.map(c => modalDataDescriptionLabel.addClass(c));
-    modalDataDescriptionLabel.html('Description');
-
-    classesModalDataDescription.map(c => modalDataDescription.addClass(c));
-    modalDataDescription.html(data.description);
+    classesModalDataLabel.map(c => {
+        modalDataDescriptionLabel.addClass(c);
+        modalDataCostLabel.addClass(c);
+        modalDataStartLabel.addClass(c);
+        modalDataEndLabel.addClass(c);
+        modalDataAddressNameLabel.addClass(c);
+        modalDataAddressZipLabel.addClass(c);
+        modalDataAddressCityLabel.addClass(c);
+        modalDataAddressStreetLabel.addClass(c);
+        modalDataRecurrenceLabel.addClass(c);
+    });
+    classesModalDataValue.map(c => {
+        modalDataDescription.addClass(c);
+        modalDataCost.addClass(c);
+        modalDataStart.addClass(c);
+        modalDataEnd.addClass(c);
+        modalDataAddress.addClass(c);
+        modalDataAddressZip.addClass(c);
+        modalDataAddressCity.addClass(c);
+        modalDataAddressStreet.addClass(c);
+    });
     
-    classesModalDataCostLabel.map(c => modalDataCostLabel.addClass(c));
-    modalDataCostLabel.html('Cost');
-
-    classesModalDataCost.map(c => modalDataCost.addClass(c));
-    modalDataCost.html(data.costs);
-
-    classesModalDataRecurrenceLabel.map(c => modalDataRecurrenceLabel.addClass(c));
-    modalDataRecurrenceLabel.html('Recurrence');
     
     classesModalDataRecurrence.map(c => modalDataRecurrence.addClass(c));
     modalDataRecurrence.html(data.recurrence);
     
-    classesModalDataDate.map(c => modalDataDate.addClass(c));
+
+    modalDataCategory.html(data.category);
     modalDataDate.html('Date');
-
-    classesModalDataStartLabel.map(c => modalDataStartLabel.addClass(c));
-    modalDataStartLabel.html('Start');
-    
-    classesModalDataStart.map(c => modalDataStart.addClass(c));
-    modalDataStart.html(start);
-
-    classesModalDataEndLabel.map(c => modalDataEndLabel.addClass(c));
-    modalDataEndLabel.html('End');
-    
-    classesModalDataEnd.map(c => modalDataEnd.addClass(c));
-    modalDataEnd.html(end);
-    
-    classesModalDataAddress.map(c => modalDataAddress.addClass(c));
     modalDataAddress.html('Address');
-
-    classesModalDataAddressNameLabel.map(c => modalDataAddressNameLabel.addClass(c));
+    
+    
+    modalDataDescriptionLabel.html('Description');
+    modalDataCostLabel.html('Cost');
+    modalDataRecurrenceLabel.html('Recurrence');
+    modalDataStartLabel.html('Start');
+    modalDataEndLabel.html('End');
     modalDataAddressNameLabel.html('Name');
-    
-    classesModalDataAddressName.map(c => modalDataAddressName.addClass(c));
-    modalDataAddressName.html(data.venue.name);
-
-    classesModalDataAddressZipLabel.map(c => modalDataAddressZipLabel.addClass(c));
     modalDataAddressZipLabel.html('Zip');
-    
-    classesModalDataAddressZip.map(c => modalDataAddressZip.addClass(c));
-    modalDataAddressZip.html(data.venue.zip);
-    
-    classesModalDataAddressCityLabel.map(c => modalDataAddressCityLabel.addClass(c));
     modalDataAddressCityLabel.html('City');
-    
-    classesModalDataAddressCity.map(c => modalDataAddressCity.addClass(c));
-    modalDataAddressCity.html(data.venue.city);
-    
-    classesModalDataAddressStreetLabel.map(c => modalDataAddressStreetLabel.addClass(c));
     modalDataAddressStreetLabel.html('Street');
     
-    classesModalDataAddressStreet.map(c => modalDataAddressStreet.addClass(c));
+    modalDataDescription.html(data.description);
+    modalDataCost.html(data.costs);
+    modalDataStart.html(start);
+    modalDataEnd.html(end);
+    modalDataAddressName.html(data.venue.name);
+    modalDataAddressZip.html(data.venue.zip);
+    modalDataAddressCity.html(data.venue.city);
     modalDataAddressStreet.html(data.venue.street);
-    
+
     classesModalFooter.map(c => modalFooter.addClass(c));
 
     classesModalLink.map(c => modalLink.addClass(c));
@@ -488,7 +497,7 @@ const createEvent = (data) => {
         start: new Date(data.start * 1000),
         end: new Date(data.end * 1000),
         title: data.title, 
-        cost: data.costs.replace(/[^\d,]/g,''),
+        cost: data.costs.replace(/[^\d,]/g,'').replace(',','.'),
         card: eventCard,
         modal: eventModal
     });
